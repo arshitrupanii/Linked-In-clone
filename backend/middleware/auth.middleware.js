@@ -7,12 +7,14 @@ dotenv.config();
 export const protectedRoute = async (req, res, next) => {
     try {
         // get cookies from request
+        console.log(req)
         const token_ = req.headers.cookie
             .split("; ")
             .map(cookie => cookie.split("="))
             .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
         const token = token_.jwt_LinkedIn_token
+
 
         if (!token) {
             return res.status(401).json({ msg: 'No token, authorization denied' });
