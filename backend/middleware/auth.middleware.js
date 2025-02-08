@@ -1,41 +1,30 @@
-import jwt from 'jsonwebtoken';
-import User from '../model/user.model.js';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import jwt from "jsonwebtoken";
+import User from "../model/user.model.js";
 
 export const protectedRoute = async (req, res, next) => {
-    try {
-        // get cookies from request
-        const token_ = req.headers.cookie
-            .split("; ")
-            .map(cookie => cookie.split("="))
-            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+	try {
+		const token = req.cookies["jwt_LinkedIn_token"];
 
-        const token = token_.jwt_LinkedIn_token
+		if (!token) {
+			return res.status(401).json({ message: "Unauthorized - No Token Provided" });
+		}
 
+		const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+		if (!decoded) {
+			return res.status(401).json({ message: "Unauthorized - Invalid Token" });
+		}
 
-        if (!token) {
-            return res.status(401).json({ msg: 'No token, authorization denied' });
-        }
+		const user = await User.findById(decoded.userId).select("-password");
 
-        const verified = jwt.verify(token, process.env.JWT_TOKEN);
+		if (!user) {
+			return res.status(401).json({ message: "User not found" });
+		}
 
-        if (!verified) {
-            return res.status(401).json({ msg: 'Token is not valid, authorization denied' });
-        }
+		req.user = user;
 
-        const user = await User.findById(verified.userId)
-
-        if (!user) {
-            return res.status(401).json({ msg: 'User no longer exists, authorization denied' });
-        }
-
-        req.user = user;
-        next();
-
-    } catch (err) {
-        res.status(500).json({ msg: 'Server Error in auth.middleware.js in ProtectedRoute.' });
-        console.log(err)
-    }
+		next();
+	} catch (error) {
+		console.log("Error in protectRoute middleware:", error.message);
+		res.status(500).json({ message: "Internal server error" });
+	}
 };
