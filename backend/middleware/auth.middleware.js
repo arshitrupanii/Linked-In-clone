@@ -7,7 +7,6 @@ dotenv.config();
 export const protectedRoute = async (req, res, next) => {
     try {
         // get cookies from request
-        console.log(req)
         const token_ = req.headers.cookie
             .split("; ")
             .map(cookie => cookie.split("="))
