@@ -68,7 +68,7 @@ export const login = async (req, res) => {
             return res.status(404).json({msg: 'Password mismatch or incorrect.'})
         }
 
-        const token = jwt.sign({userId : User._id }, process.env.JWT_TOKEN, {expiresIn: "3d"})
+        const token = jwt.sign({userId : existingEmail._id }, process.env.JWT_TOKEN, {expiresIn: "3d"})
 
         await res.cookie("jwt_LinkedIn_token", token, {
             httpOnly: true,
