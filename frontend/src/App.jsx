@@ -1,7 +1,9 @@
 import './App.css'
-import Layout from "./components/Layout/Layout.jsx"
-import {Route, Routes } from "react-router-dom"
-import Homepage from "./Pages/auth/Homepage.jsx"
+import { Route, Routes, BrowserRouter } from "react-router-dom"
+import Layout from "./components/Layout/Layout"
+
+
+import Homepage from "./Pages/Homepage.jsx"
 import Loginpage from "./pages/auth/Loginpage.jsx"
 import SignPage from "./pages/auth/SignPage.jsx"
 
@@ -9,14 +11,18 @@ function App() {
 
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<div><Homepage /> </div>} />
-        <Route path="/login" element={<div><Loginpage /> </div>} />
-        <Route path="/singup" element={<div><SignPage /> </div>} />
-      </Routes>
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<Loginpage />} />
+          <Route path="/signup" element={<SignPage />} />
+        </Routes>
+
+      </BrowserRouter>
+
+
     </Layout>
-
-
   )
 }
 
