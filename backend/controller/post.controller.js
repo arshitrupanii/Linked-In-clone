@@ -153,7 +153,8 @@ export const likepost = async(req, res) => {
 
     } catch (error) {
         console.log("error in like post", error)
-        res.status(500).json({msg: "Failed to like post"}) 
+        res.status(500).json({msg: "Failed to like post"})
     }
 
 }
+
