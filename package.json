@@ -8,7 +8,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mailtrap": "^3.4.0",
-    "mongoose": "^8.10.0"
+    "mongoose": "^8.10.0",
+    "react-icons": "^5.4.0"
   },
   "name": "linked-in-clone-",
   "version": "1.0.0",
