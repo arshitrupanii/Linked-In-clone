@@ -86,7 +86,7 @@ const Loginpage = () => {
 
 
           <div className="flex justify-center items-center">
-            <button onClick={handleSubmit} className="bg-primary w-[85%] rounded-3xl text-[20px] h-full p-2 text-white" type="submit">Sign In</button>
+            <button onClick={handleSubmit} className="bg-primary bg-opacity-95 hover:bg-primary w-[85%] rounded-3xl text-[20px] h-full p-2 text-white" type="submit">Sign In</button>
           </div>
 
           <div className="flex items-center gap-3 justify-center">

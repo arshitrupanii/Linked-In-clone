@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import {axiosInstance} from '../../lib/axios.js'
 
 const SignPage = () => {
   const [email, setemail] = useState("")
@@ -10,7 +12,23 @@ const SignPage = () => {
   const [checkbox, setcheckbox] = useState(false)
   const [showpassword, setshowpassword] = useState(false)
 
+  const { mutate:SignUpMutate } = useMutation({
+    mutationFn : async (data) => {
+      const res = await axiosInstance.post("auth/signup", data)
+      return res.data
+    },
+    onSuccess: (data) => {
+      toast.success(data.message)
+    },
+    onError: (error) => {
+      toast.error(error.response.data.msg)
+    }
+  })
+
   const handleSubmit = (e) => {
+    const username = email.split("@")[0]
+    const name = email.split("@")[0]
+
     e.preventDefault()
     if (email === "" || password === "") {
       toast.error("Please fill the form")
@@ -36,8 +54,8 @@ const SignPage = () => {
 
     setemail("")
     setpassword("")
-    toast.success("Login successfully")
-    console.log(email, password);
+    SignUpMutate({ name, username, email, password })
+
   }
 
   return (
@@ -86,7 +104,7 @@ const SignPage = () => {
 
           <p className="text-gray-500 px-2 text-center">By clicking Agree & Join, you agree to the LinkedIn <span className="text-primary">User Agreement, Privacy Policy</span>, and <span className="text-primary">Cookie Policy.</span></p>
           <div className="flex justify-center items-center">
-            <button onClick={handleSubmit} className="bg-primary w-[85%] rounded-3xl text-[20px] h-full p-2 text-white" type="submit">Agree & join</button>
+            <button onClick={handleSubmit} className="bg-primary bg-opacity-90 w-[85%] hover:bg-primary rounded-3xl text-[20px] h-full p-2 text-white" type="submit">Agree & join</button>
           </div>
 
           <div className="flex items-center gap-3 justify-center">

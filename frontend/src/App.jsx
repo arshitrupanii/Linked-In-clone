@@ -2,10 +2,10 @@ import './App.css'
 import { Route, Routes, BrowserRouter } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 
-
 import Homepage from "./Pages/Homepage.jsx"
 import Loginpage from "./pages/auth/Loginpage.jsx"
 import SignPage from "./pages/auth/SignPage.jsx"
+import { ToastContainer } from 'react-toastify'
 
 function App() {
 
@@ -19,7 +19,7 @@ function App() {
         </Routes>
 
       </BrowserRouter>
-
+      <ToastContainer />
 
     </Layout>
   )
