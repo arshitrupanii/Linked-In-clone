@@ -79,7 +79,7 @@ const Loginpage = () => {
 
           <p className="text-primary text-lg">Forgot password?</p>
 
-          <div className="flex gap-2 mb-1 mt-2">
+          <div className="flex gap-2 my-2 text-center items-center">
             <input onChange={() => setcheckbox(!checkbox)} className="" type="checkbox" name="" id="" />
             <label htmlFor="">Keep me logged in </label>
           </div>

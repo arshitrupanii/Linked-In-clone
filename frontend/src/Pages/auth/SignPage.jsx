@@ -77,7 +77,7 @@ const SignPage = () => {
             </div>
           </div>
 
-          <div className="flex gap-2 mb-1 mt-2">
+          <div className="flex gap-2 text-center items-center my-2">
             <input
               onChange={() => setcheckbox(!checkbox)}
               className="" type="checkbox" name="" id="" />
