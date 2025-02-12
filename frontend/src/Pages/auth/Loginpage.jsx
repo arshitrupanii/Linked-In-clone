@@ -2,9 +2,44 @@ import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const Loginpage = () => {
+  const [email, setemail] = useState("")
+  const [password, setpassword] = useState("")
+  const [checkbox, setcheckbox] = useState(false)
   const [showpassword, setshowpassword] = useState(false)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (email === "" || password === "") {
+      toast.error("Please fill the form")
+      return 
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if(!email.match(emailPattern)){
+      toast.error("Invalid email")
+      return 
+    }
+
+    if(password.length < 6 || password.length > 20){
+      toast.error("Password must contain at least 6 or more characters")
+      return 
+    }
+
+    if(checkbox === false){
+      toast.error("Please check the box")
+      return
+    }
+
+    setemail("")
+    setpassword("")
+    toast.success("Login successfully")
+    console.log(email, password);
+  }
 
   return (
     <div className="min-h-screen">
@@ -19,7 +54,7 @@ const Loginpage = () => {
 
           <div className="flex flex-col gap-5">
             <label className="absolute px-2 py-1" htmlFor="">Email or phone number</label>
-            <input className="border-black border-2 rounded-md pt-7 pb-2 px-2" type="text" />
+            <input value={email} onChange={(e) => setemail(e.target.value)} className="border-black border-2 rounded-md pt-7 pb-2 px-2" type="text" />
 
             <div className="flex flex-col gap-2">
               <div className="relative">
@@ -28,6 +63,8 @@ const Loginpage = () => {
                   type={showpassword ? "text" : "password"}
                   placeholder="Password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setpassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -39,17 +76,17 @@ const Loginpage = () => {
               </div>
             </div>
           </div>
-          
+
           <p className="text-primary text-lg">Forgot password?</p>
 
           <div className="flex gap-2 mb-1 mt-2">
-            <input className="" type="checkbox" name="" id="" />
-            <label  htmlFor="">Keep me logged in </label>
+            <input onChange={() => setcheckbox(!checkbox)} className="" type="checkbox" name="" id="" />
+            <label htmlFor="">Keep me logged in </label>
           </div>
 
-       
+
           <div className="flex justify-center items-center">
-            <button className="bg-primary w-[85%] rounded-3xl text-[20px] h-full p-2 text-white" type="submit">Sign In</button>
+            <button onClick={handleSubmit} className="bg-primary w-[85%] rounded-3xl text-[20px] h-full p-2 text-white" type="submit">Sign In</button>
           </div>
 
           <div className="flex items-center gap-3 justify-center">
@@ -68,7 +105,9 @@ const Loginpage = () => {
         </div>
       </div>
       <p className="text-center mt-5">Looking to create a page for business? <span className="text-primary">Get help</span></p>
+      <ToastContainer />
     </div>
+
   )
 }
 
