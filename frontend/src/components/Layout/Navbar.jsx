@@ -4,25 +4,26 @@ import { Link } from "react-router-dom";
 import { Bell, Home, LogOut, User, Users } from "lucide-react";
 
 const Navbar = () => {
-	const { data: authUser } = useQuery({ queryKey: ["authuser"] });
+	const { data: authuser } = useQuery({ queryKey: ["authuser"] });
 	const queryClient = useQueryClient();
 
 	const { data: notifications } = useQuery({
 		queryKey: ["notifications"],
 		queryFn: async () => axiosInstance.get("/notifications"),
-		enabled: !!authUser,
+		enabled: !!authuser,
 	});
 
 	const { data: connectionRequests } = useQuery({
 		queryKey: ["connectionRequests"],
 		queryFn: async () => axiosInstance.get("/connections/requests"),
-		enabled: !!authUser,
+		enabled: !!authuser,
 	});
 
 	const { mutate: logout } = useMutation({
 		mutationFn: () => axiosInstance.post("/auth/logout"),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      console.log("logged out");
+			queryClient.invalidateQueries({ queryKey: ["authuser"] });
 		},
 	});
 
@@ -39,7 +40,7 @@ const Navbar = () => {
 						</Link>
 					</div>
 					<div className='flex items-center gap-2 md:gap-6'>
-						{authUser ? (
+						{authuser ? (
 							<>
 								<Link to={"/"} className='text-neutral flex flex-col items-center'>
 									<Home size={20} />
@@ -70,7 +71,7 @@ const Navbar = () => {
 									)}
 								</Link>
 								<Link
-									to={`/profile/${authUser.username}`}
+									to={`/profile/${authuser.username}`}
 									className='text-neutral flex flex-col items-center'
 								>
 									<User size={20} />

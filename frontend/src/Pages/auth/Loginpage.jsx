@@ -3,7 +3,8 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
-
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { axiosInstance } from "../../lib/axios";
 
 const Loginpage = () => {
   const [email, setemail] = useState("")
@@ -11,34 +12,32 @@ const Loginpage = () => {
   const [checkbox, setcheckbox] = useState(false)
   const [showpassword, setshowpassword] = useState(false)
 
+  const queryClient = useQueryClient();
+
+  const { mutate: loginMutate } = useMutation({
+    mutationFn: async (userdata) =>  axiosInstance.post("/auth/login",userdata),
+    onSuccess: (data) => {
+      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: ["authuser"] });
+    },
+    onError: (error) => {
+      toast.error(error.response.data.msg)
+    }
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault()
+
     if (email === "" || password === "") {
       toast.error("Please fill the form")
-      return 
+      return
     }
-
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if(!email.match(emailPattern)){
-      toast.error("Invalid email")
-      return 
-    }
-
-    if(password.length < 6 || password.length > 20){
-      toast.error("Password must contain at least 6 or more characters")
-      return 
-    }
-
-    if(checkbox === false){
+    if (checkbox === false) {
       toast.error("Please check the box")
       return
     }
 
-    setemail("")
-    setpassword("")
-    toast.success("Login successfully")
-    console.log(email, password);
+    loginMutate({ email, password })
   }
 
   return (
@@ -80,8 +79,8 @@ const Loginpage = () => {
           <p className="text-primary text-lg">Forgot password?</p>
 
           <div className="flex gap-2 my-2 text-center items-center">
-            <input onChange={() => setcheckbox(!checkbox)} className="" type="checkbox" name="" id="" />
-            <label htmlFor="">Keep me logged in </label>
+            <input onChange={() => setcheckbox(!checkbox)} className="cursor-pointer" type="checkbox" name="" id="" />
+            <label htmlFor="checkbox">Keep me logged in </label>
           </div>
 
 

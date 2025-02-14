@@ -101,7 +101,7 @@ const SignPage = () => {
           <div className="flex gap-2 text-center items-center my-2">
             <input
               onChange={() => setcheckbox(!checkbox)}
-              className="" type="checkbox" name="" id="" />
+              className="cursor-pointer" type="checkbox" name="" id="" />
             <label htmlFor="">Keep me logged in </label>
           </div>
 
