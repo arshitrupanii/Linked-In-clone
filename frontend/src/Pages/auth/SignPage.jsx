@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {axiosInstance} from '../../lib/axios.js'
 
 const SignPage = () => {
@@ -12,6 +12,8 @@ const SignPage = () => {
   const [checkbox, setcheckbox] = useState(false)
   const [showpassword, setshowpassword] = useState(false)
 
+  const queryClient = useQueryClient();
+
   const { mutate:SignUpMutate } = useMutation({
     mutationFn : async (data) => {
       const res = await axiosInstance.post("auth/signup", data)
@@ -19,6 +21,7 @@ const SignPage = () => {
     },
     onSuccess: (data) => {
       toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: ["authuser"] });
     },
     onError: (error) => {
       toast.error(error.response.data.msg)
