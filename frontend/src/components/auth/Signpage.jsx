@@ -50,10 +50,10 @@ const SignPage = () => {
       return
     }
 
-    if (checkbox === false) {
-      toast.error("Please check the box")
-      return
-    }
+    // if (checkbox === false) {
+    //   toast.error("Please check the box")
+    //   return
+    // }
 
     setemail("")
     setpassword("")

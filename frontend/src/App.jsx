@@ -1,10 +1,11 @@
 import './App.css'
-import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
+import { toast } from 'react-toastify'
 
 import Homepage from "./Pages/Homepage.jsx"
-import Loginpage from "./Pages/auth/Loginpage.jsx"
-import SignPage from "./pages/auth/SignPage.jsx"
+import Loginpage from "./components/auth/Loginpage.jsx"
+import SignPage from "./components/auth/Signpage.jsx"
 import { ToastContainer } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { axiosInstance } from './lib/axios.js'
@@ -22,7 +23,7 @@ function App() {
         if(error.response && error.response.status === 401){
           return null
         }
-        toastr.error(error.response.status.msg || "something went wrong")
+        toast.error(error.response.status.msg || "something went wrong")
       }
     }
   })

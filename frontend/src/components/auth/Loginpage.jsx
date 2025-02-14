@@ -32,10 +32,10 @@ const Loginpage = () => {
       toast.error("Please fill the form")
       return
     }
-    if (checkbox === false) {
-      toast.error("Please check the box")
-      return
-    }
+    // if (checkbox === false) {
+    //   toast.error("Please check the box")
+    //   return
+    // }
 
     loginMutate({ email, password })
   }
