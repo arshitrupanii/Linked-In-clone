@@ -2,6 +2,7 @@ import cloudinary from '../lib/cloudinary.js'
 import Post from '../model/post.model.js'
 import Notifications from '../model/notification.model.js'
 
+
 export const getFeedpost = async (req,res) => {
     try {
         const posts = Post.find({authon: {$in : req.user.connections}})
@@ -19,20 +20,20 @@ export const getFeedpost = async (req,res) => {
 
 export const createPost = async (req, res) => {
     try {
-        const {content, image} = body;
+        const {content, image} = req.body;
     
         let newpost;
 
         if(image){
             const imgresult = await cloudinary.uploader.upload(image)
-            newpost = Post.create({
+            newpost = Post({
                 author: req.user._id,
                 content,
                 image: imgresult.secure_url
             })
         }
         else{
-            newpost = Post.create({
+            newpost = new Post({
                 author: req.user._id,
                 content
             })

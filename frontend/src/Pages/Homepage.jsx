@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { axiosInstance } from "../lib/axios"
 import { toast } from "react-toastify"
 import Sidebar from "../components/Sidebar"
+import Postcreation from "../components/Postcreation"
 
 const Homepage = () => {
   const { data: authuser } = useQuery({ queryKey: ['authuser'] })
@@ -35,10 +36,13 @@ const Homepage = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-       <div className="hidden lg:block lg:col-span-1">
-        <Sidebar user = {authuser}/>
-        
-       </div>
+      <div className="hidden lg:block lg:col-span-1">
+        <Sidebar user={authuser} />
+      </div>
+
+      <div className="col-span-1 lg:col-span-2 order-first lg:order-none">
+        <Postcreation user={authuser} />
+      </div>
     </div>
   )
 }
