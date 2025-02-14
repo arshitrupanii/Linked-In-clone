@@ -35,7 +35,7 @@ const Postcreation = ({ user }) => {
         try {
             const postdata = { content }
             if (image) {
-                postdata.image = image
+                postdata.image = await readFileAsDataURL(image)
             }
             createPostMutation(postdata)
         } catch (error) {
