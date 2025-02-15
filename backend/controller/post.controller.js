@@ -64,8 +64,8 @@ export const createPost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
     try {
-        const postId = req.params.post;
-        const userId = req.params._id;
+        const postId = req.params.id;
+        const userId = req.user._id;
 
         const post = await Post.findById(postId);
         if (!post) {
@@ -79,7 +79,7 @@ export const deletePost = async (req, res) => {
 
         // delete image from cloudinary if exists
         if (post.image) {
-            await cloudinary.uploader.destroy(post.image.split('/').pop().split('.')[0])
+            await cloudinary.uploader.destroy(post.image.split("/").pop().split(".")[0]);
         }
 
         await Post.findByIdAndDelete(postId)
@@ -112,14 +112,14 @@ export const getPost = async (req, res) => {
 
 export const createComment = async (req, res) => {
     try {
-        const postId = req.params.post;
+        const postId = req.params.id;
         const { content } = req.body;
 
         const post = await Post.findByIdAndUpdate(postId, {
             $push: { comments: { user: req.user._id, content } }
         }, { new: true }).populate("author", "name email username headline profilePicture")
 
-        if (post.author.toString() !== req.user._id.toString()) {
+        if (post.author._id.toString() !== req.user._id.toString()) {
             const newNotifications = new Notifications({
                 recipient: post.author,
                 type: "comment",
@@ -127,9 +127,21 @@ export const createComment = async (req, res) => {
                 relatedPost: postId
             })
             await newNotifications.save()
-        }
 
-        res.status(201).json(post)
+            try {
+				const postUrl = process.env.CLIENT_URL + "/post/" + postId;
+				await sendCommentNotificationEmail(
+					post.author.email,
+					post.author.name,
+					req.user.name,
+					postUrl,
+					content
+				);
+			} catch (error) {
+				console.log("Error in sending comment notification email:", error);
+			}
+        }
+        res.status(200).json(post)
 
     } catch (error) {
         console.log("error in create comment " + error)

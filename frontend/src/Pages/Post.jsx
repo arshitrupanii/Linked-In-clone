@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { axiosInstance } from "../lib/axios";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify"
 import { Link, useParams } from "react-router-dom";
 import { Loader, MessageCircle, Send, Share2, ThumbsUp, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -11,17 +11,18 @@ import PostAction from "./PostAction";
 const Post = ({ post }) => {
 	const { postId } = useParams();
 
-	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+	const { data: authuser } = useQuery({ queryKey: ["authuser"] });
 	const [showComments, setShowComments] = useState(false);
 	const [newComment, setNewComment] = useState("");
 	const [comments, setComments] = useState(post.comments || []);
-	const isOwner = authUser._id === post.author._id;
-	const isLiked = post.likes.includes(authUser._id);
+	const isOwner = authuser._id === post.author._id;
+	const isLiked = post.likes.includes(authuser._id);
 
 	const queryClient = useQueryClient();
 
 	const { mutate: deletePost, isPending: isDeletingPost } = useMutation({
 		mutationFn: async () => {
+			console.log("post ni id " + post._id);
 			await axiosInstance.delete(`/posts/delete/${post._id}`);
 		},
 		onSuccess: () => {
@@ -29,6 +30,7 @@ const Post = ({ post }) => {
 			toast.success("Post deleted successfully");
 		},
 		onError: (error) => {
+			console.log(error)
 			toast.error(error.message);
 		},
 	});
@@ -53,7 +55,7 @@ const Post = ({ post }) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["posts"] });
 			queryClient.invalidateQueries({ queryKey: ["post", postId] });
-		},
+		},	
 	});
 
 	const handleDeletePost = () => {
@@ -76,9 +78,9 @@ const Post = ({ post }) => {
 				{
 					content: newComment,
 					user: {
-						_id: authUser._id,
-						name: authUser.name,
-						profilePicture: authUser.profilePicture,
+						_id: authuser._id,
+						name: authuser.name,
+						profilePicture: authuser.profilePicture,
 					},
 					createdAt: new Date(),
 				},
