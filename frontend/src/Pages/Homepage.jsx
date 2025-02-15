@@ -3,6 +3,8 @@ import { axiosInstance } from "../lib/axios"
 import { toast } from "react-toastify"
 import Sidebar from "../components/Sidebar"
 import Postcreation from "../components/Postcreation"
+import PostPage from "../Pages/Postpage"
+import { Users } from "lucide-react";
 
 const Homepage = () => {
   const { data: authuser } = useQuery({ queryKey: ['authuser'] })
@@ -19,17 +21,13 @@ const Homepage = () => {
     }
   })
 
-  const { data: posts } = useQuery({
-    queryKey: ["posts"],
-    queryFn: async () => {
-      try {
-        const res = await axiosInstance.get("/posts")
-        return res.data
-      } catch (error) {
-        toast.error(error.response.data.msg)
-      }
-    }
-  })
+	const { data: posts } = useQuery({
+		queryKey: ["posts"],
+		queryFn: async () => {
+			const res = await axiosInstance.get("/posts");
+			return res.data;
+		},
+	});
 
   console.log("recommendedUsers", recommendedUsers)
   console.log("posts", posts)
@@ -42,7 +40,21 @@ const Homepage = () => {
 
       <div className="col-span-1 lg:col-span-2 order-first lg:order-none">
         <Postcreation user={authuser} />
+        {posts?.map((post) => (
+          <PostPage key={post._id} post={post} />
+        ))}
+        
+				{posts?.length === 0 && (
+					<div className='bg-white rounded-lg shadow p-8 text-center'>
+						<div className='mb-6'>
+							<Users size={64} className='mx-auto text-blue-500' />
+						</div>
+						<h2 className='text-2xl font-bold mb-4 text-gray-800'>No Posts Yet</h2>
+						<p className='text-gray-600 mb-6'>Connect with others to start seeing posts in your feed!</p>
+					</div>
+				)}
       </div>
+
     </div>
   )
 }

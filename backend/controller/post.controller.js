@@ -5,18 +5,31 @@ import Notifications from '../model/notification.model.js'
 
 export const getFeedpost = async (req,res) => {
     try {
-        const posts = Post.find({authon: {$in : [...req.user.connections, req.user._id]}})
+        const posts = await Post.find({author: {$in : [...req.user.connections, req.user._id]}})
         .populate("author", "name username profilePicture headline")
         .populate("comments.user", "name profilePicture")
         .sort({createdAt : -1})
 
         res.status(200).json(posts)
-
-
     } catch (error) {
-        
+        console.error("Error in getFeedPosts controller:", error);
+		res.status(500).json({ message: "Server error" });
     }
 }
+
+export const getFeedPosts = async (req, res) => {
+	try {
+		const posts = await Post.find({ author: { $in: [...req.user.connections, req.user._id] } })
+			.populate("author", "name username profilePicture headline")
+			.populate("comments.user", "name profilePicture")
+			.sort({ createdAt: -1 });
+
+		res.status(200).json(posts);
+	} catch (error) {
+		console.error("Error in getFeedPosts controller:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
 
 export const createPost = async (req, res) => {
     try {
