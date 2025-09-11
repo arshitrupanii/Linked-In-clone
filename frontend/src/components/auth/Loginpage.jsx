@@ -25,10 +25,12 @@ const Loginpage = () => {
     }
   })
 
+  console.log(useMutation(), "this is from frontend")
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (email === "" || password === "") {
+    if (email.trim() === "" || password.trim() === "") {
       toast.error("Please fill the form")
       return
     }

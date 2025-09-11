@@ -1,4 +1,3 @@
-import './App.css'
 import { Route, Routes, Navigate } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 import { toast } from 'react-toastify'

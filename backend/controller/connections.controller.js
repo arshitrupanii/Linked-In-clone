@@ -5,8 +5,8 @@ import User from "../model/user.model.js";
 
 export const sendConnectionRequest = async (req, res) => {
 	try {
-		const { userId } = req.params;
-		const senderId = req.user._id;
+		const { userId } = req.params; //who get connection request
+		const senderId = req.user._id; // who sent connection request
 
 		if (senderId.toString() === userId) {
 			return res.status(400).json({ message: "You can't send a request to yourself" });
@@ -41,8 +41,8 @@ export const sendConnectionRequest = async (req, res) => {
 
 export const acceptConnectionRequest = async (req, res) => {
 	try {
-		const { requestId } = req.params;
-		const userId = req.user._id;
+		const { requestId } = req.params; // who send connection request
+		const userId = req.user._id; // whom have request in inbox
 
 		const request = await ConnectionRequest.findById(requestId)
 			.populate("sender", "name email username")

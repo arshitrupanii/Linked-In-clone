@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken"
 import Notification from "../model/notification.model.js"
 
 export const getusernotification = async (req, res) => {
