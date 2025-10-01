@@ -28,11 +28,11 @@ function App() {
   })
 
   if(isLoading){
-    return <div>
+    return (<div>
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin w-16 h-16 text-primary"></div>
       </div>
-    </div>
+    </div>)
   }
 
   return (

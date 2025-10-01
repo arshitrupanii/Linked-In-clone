@@ -25,8 +25,6 @@ const Loginpage = () => {
     }
   })
 
-  console.log(useMutation(), "this is from frontend")
-
   const handleSubmit = (e) => {
     e.preventDefault()
 

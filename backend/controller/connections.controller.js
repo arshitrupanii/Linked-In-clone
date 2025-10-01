@@ -43,10 +43,11 @@ export const acceptConnectionRequest = async (req, res) => {
 	try {
 		const { requestId } = req.params; // who send connection request
 		const userId = req.user._id; // whom have request in inbox
-
+		
 		const request = await ConnectionRequest.findById(requestId)
 			.populate("sender", "name email username")
 			.populate("recipient", "name username");
+
 
 		if (!request) {
 			return res.status(404).json({ message: "Connection request not found" });

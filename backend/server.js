@@ -21,16 +21,19 @@ app.use(cors(
         credentials: true
     }
 ));
-app.use(express.json({limit: '50mb'})); 
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
-app.use("/api/v1/auth" , authRoutes)
-app.use("/api/v1/user" , userRoutes)
-app.use("/api/v1/posts" , postRoutes)
-app.use("/api/v1/notifications" , notificationRoutes)
-app.use("/api/v1/connections" , connectionsRoutes)
+
+// all api is tested 
+// notifications and connections last 2 api
+app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/posts", postRoutes)
+app.use("/api/v1/notifications", notificationRoutes)
+app.use("/api/v1/connections", connectionsRoutes)
 
 app.listen(PORT, () => {
     console.log("server listening on port " + PORT);
-    connectDB();    
+    connectDB();
 });

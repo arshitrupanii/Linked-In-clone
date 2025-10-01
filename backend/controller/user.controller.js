@@ -6,7 +6,7 @@ export const getSuggestedConnections = async (req, res) => {
 
     try {
         const currentUser = await User.findById(req.user._id).select("connections")
-
+    
 
         const SuggestUser = await User.find({
             _id:{
