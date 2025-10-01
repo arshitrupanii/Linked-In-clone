@@ -1,6 +1,5 @@
 import User from '../model/user.model.js'
 import bcrypt from 'bcryptjs';
-import { response } from 'express';
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res) => {
@@ -12,11 +11,13 @@ export const signup = async (req, res) => {
         }
 
         const existingusername = await User.findOne({username: username})
+
         if(existingusername){
             return res.status(400).json({msg: 'Username already exists'})
         }
 
         const existingEmail = await User.findOne({email: email})
+
         if(existingEmail){
             return res.status(400).json({msg: 'Email already exists'})
         }
@@ -37,10 +38,11 @@ export const signup = async (req, res) => {
 
         await user.save();
 
+        // create token for user loggedin continuesly
         const token = jwt.sign({userId : user._id }, process.env.JWT_TOKEN, {expiresIn: "3d"})
         res.cookie("jwt_LinkedIn_token", token, {
             httpOnly: true,
-            maxAge : 3 * 24 * 60 * 60 * 1000,
+            maxAge : 3 * 24 * 60 * 60 * 1000, //3 days
             sameSite: true,
             secure: process.env.NODE_ENV === "production",
         })
@@ -72,7 +74,7 @@ export const login = async (req, res) => {
 
         await res.cookie("jwt_LinkedIn_token", token, {
             httpOnly: true,
-            maxAge : 3 * 24 * 60 * 60 * 1000,
+            maxAge : 3 * 24 * 60 * 60 * 1000, // 3 days
             sameSite: true,
             secure: process.env.NODE_ENV === "production",
         })

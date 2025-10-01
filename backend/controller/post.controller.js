@@ -4,6 +4,7 @@ import Notifications from '../model/notification.model.js'
 
 
 export const getFeedpost = async (req, res) => {
+    // Apne connections aur khud ke posts fetch ho rahe hain.
     try {
         const posts = await Post.find({ author: { $in: [...req.user.connections, req.user._id] } })
             .populate("author", "name username profilePicture headline")
@@ -39,7 +40,7 @@ export const createPost = async (req, res) => {
 
         if (image) {
             const imgresult = await cloudinary.uploader.upload(image)
-            newpost = Post({
+            newpost = new Post({
                 author: req.user._id,
                 content,
                 image: imgresult.secure_url
@@ -128,6 +129,7 @@ export const createComment = async (req, res) => {
             })
             await newNotifications.save()
 
+            // this is for send email to 
             try {
 				const postUrl = process.env.CLIENT_URL + "/post/" + postId;
 				await sendCommentNotificationEmail(
