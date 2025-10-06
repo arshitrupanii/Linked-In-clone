@@ -8,7 +8,7 @@ import { Users } from "lucide-react";
 import RecommendedUser from "../components/RecommendedUser"
 
 const Homepage = () => {
-  const { data: authuser } = useQuery({ queryKey: ['authuser'] })
+  const { data: authuser } = useQuery({ queryKey: ['authuser'] }) // authuser is new variable in that
 
   const { data: recommendedUsers } = useQuery({
     queryKey: ["recommendedUsers"],
@@ -29,9 +29,6 @@ const Homepage = () => {
       return res.data;
     },
   });
-
-  console.log("recommendedUsers", recommendedUsers)
-  console.log("posts", posts)
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
