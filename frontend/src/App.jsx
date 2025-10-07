@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "./lib/axios.js";
 import NetworkPage from "./Pages/NetworkPage.jsx";
+import PostPage from "./Pages/PostPage.jsx";
 
 function App() {
   const { data: authuser, isLoading } = useQuery({
@@ -59,6 +60,10 @@ function App() {
         <Route
           path="/network"
           element={authuser ? <NetworkPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/post/:postId" 
+          element= {authuser ? <PostPage /> : <Navigate to={"/login"} />}
         />
       </Routes>
       <ToastContainer />

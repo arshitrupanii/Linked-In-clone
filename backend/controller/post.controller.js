@@ -1,6 +1,7 @@
 import cloudinary from '../lib/cloudinary.js'
 import Post from '../model/post.model.js'
 import Notifications from '../model/notification.model.js'
+import mongoose from 'mongoose'
 
 
 export const getFeedpost = async (req, res) => {
@@ -95,6 +96,13 @@ export const deletePost = async (req, res) => {
 export const getPost = async (req, res) => {
     try {
         const postId = req.params.id;
+
+        const postValid = mongoose.Types.ObjectId.isValid(postId);
+
+        if(postValid){
+            return res.status(404).json({ msg: "Post not found!" })
+        }
+
         const post = await Post.findById(postId)
             .populate("author", "name username profilePicture headline")
             .populate("comments.user", "name profilePicture username headline")
@@ -106,7 +114,7 @@ export const getPost = async (req, res) => {
         res.status(200).json(post)
 
     } catch (error) {
-        console.log("Error in getpost " + error)
+        console.log("Error in getpost", error)
         res.status(500).json({ msg: "Failed to get post" })
     }
 }
