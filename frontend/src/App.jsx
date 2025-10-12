@@ -3,16 +3,17 @@ import Layout from "./components/Layout/Layout";
 import { toast } from "react-toastify";
 
 import Homepage from "./Pages/Homepage.jsx";
+import ProfilePage from "./Pages/ProfilePage";
+import Notification from "./Pages/Notificaion.jsx";
 import Loginpage from "./components/auth/Loginpage.jsx";
 import SignPage from "./components/auth/Signpage.jsx";
-import ProfilePage from "./Pages/ProfilePage";
-
 
 import { ToastContainer } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "./lib/axios.js";
 import NetworkPage from "./Pages/NetworkPage.jsx";
-import PostPage from "./Pages/PostPage.jsx";
+import PostPage from "./components/PostPage.jsx";
+import Loading from "./components/Loading.jsx";
 
 function App() {
   const { data: authuser, isLoading } = useQuery({
@@ -30,13 +31,7 @@ function App() {
     },
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="w-16 h-16 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   return (
     <Layout>
@@ -62,8 +57,12 @@ function App() {
           element={authuser ? <NetworkPage /> : <Navigate to={"/login"} />}
         />
         <Route
-          path="/post/:postId" 
-          element= {authuser ? <PostPage /> : <Navigate to={"/login"} />}
+          path="/notifications"
+          element={authuser ? <Notification /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/post/:postId"
+          element={authuser ? <PostPage /> : <Navigate to={"/login"} />}
         />
       </Routes>
       <ToastContainer />

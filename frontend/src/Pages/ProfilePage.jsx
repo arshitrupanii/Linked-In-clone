@@ -7,9 +7,9 @@ const ProfilePage = () => {
 
   return (
     <div>
-        
+        <h1>{username}</h1>
     </div>
   )
 }
 
-export default ProfilePage
+export default ProfilePage;

@@ -99,7 +99,7 @@ export const getPost = async (req, res) => {
 
         const postValid = mongoose.Types.ObjectId.isValid(postId);
 
-        if(postValid){
+        if(!postValid){
             return res.status(404).json({ msg: "Post not found!" })
         }
 

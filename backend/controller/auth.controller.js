@@ -50,8 +50,8 @@ export const signup = async (req, res) => {
         res.status(201).json({message : 'user is Created successfully'})
 
     } catch (error) {
-        console.error("Error in authcontroller.js signup : "+error.message);
-        res.status(500).send("error in authcontroller.js Signup : "+error.message);
+        console.error("Error in authcontroller.js signup : "+ error.message);
+        res.status(500).send("Error in Signup : " + error.message);
     }
 }
 
@@ -79,7 +79,7 @@ export const login = async (req, res) => {
             secure: process.env.NODE_ENV === "production",
         })
 
-        res.status(201).json({message : 'user is Login successfully..'})
+        res.status(201).json({message : 'Login successfully..'})
 
 
     } catch (error) {
