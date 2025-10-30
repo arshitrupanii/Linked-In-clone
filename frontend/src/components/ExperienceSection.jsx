@@ -47,7 +47,7 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 	};
 
 	return (
-		<div className='bg-white shadow rounded-lg p-6 mb-6'>
+		<div className='bg-secondary shadow rounded-lg p-6 mb-6'>
 			<h2 className='text-xl font-semibold mb-4'>Experience</h2>
 			{experiences.map((exp) => (
 				<div key={exp._id} className='mb-4 flex justify-between items-start'>
@@ -55,11 +55,11 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 						<Briefcase size={20} className='mr-2 mt-1' />
 						<div>
 							<h3 className='font-semibold'>{exp.title}</h3>
-							<p className='text-gray-600'>{exp.company}</p>
-							<p className='text-gray-500 text-sm'>
+							<p className='text-gray-300'>{exp.company}</p>
+							<p className='text-gray-300 text-sm'>
 								{formatDate(exp.startDate)} - {exp.endDate ? formatDate(exp.endDate) : "Present"}
 							</p>
-							<p className='text-gray-700'>{exp.description}</p>
+							<p className='text-gray-300'>{exp.description}</p>
 						</div>
 					</div>
 					{isEditing && (
@@ -77,21 +77,21 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 						placeholder='Title'
 						value={newExperience.title}
 						onChange={(e) => setNewExperience({ ...newExperience, title: e.target.value })}
-						className='w-full p-2 border rounded mb-2'
+						className='bg-secondary w-full p-2 border rounded mb-2'
 					/>
 					<input
 						type='text'
 						placeholder='Company'
 						value={newExperience.company}
 						onChange={(e) => setNewExperience({ ...newExperience, company: e.target.value })}
-						className='w-full p-2 border rounded mb-2'
+						className='bg-secondary w-full p-2 border rounded mb-2'
 					/>
 					<input
 						type='date'
 						placeholder='Start Date'
 						value={newExperience.startDate}
 						onChange={(e) => setNewExperience({ ...newExperience, startDate: e.target.value })}
-						className='w-full p-2 border rounded mb-2'
+						className='bg-secondary w-full p-2 border rounded mb-2'
 					/>
 					<div className='flex items-center mb-2'>
 						<input
@@ -99,7 +99,7 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 							id='currentlyWorking'
 							checked={newExperience.currentlyWorking}
 							onChange={handleCurrentlyWorkingChange}
-							className='mr-2'
+							className='bg-secondary mr-2'
 						/>
 						<label htmlFor='currentlyWorking'>I currently work here</label>
 					</div>
@@ -109,18 +109,18 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 							placeholder='End Date'
 							value={newExperience.endDate}
 							onChange={(e) => setNewExperience({ ...newExperience, endDate: e.target.value })}
-							className='w-full p-2 border rounded mb-2'
+							className='bg-secondary w-full p-2 border rounded mb-2'
 						/>
 					)}
 					<textarea
 						placeholder='Description'
 						value={newExperience.description}
 						onChange={(e) => setNewExperience({ ...newExperience, description: e.target.value })}
-						className='w-full p-2 border rounded mb-2'
+						className='bg-secondary w-full p-2 border rounded mb-2'
 					/>
 					<button
 						onClick={handleAddExperience}
-						className='bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
+						className='bg-primary mt-4 text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
 					>
 						Add Experience
 					</button>
@@ -132,7 +132,7 @@ const ExperienceSection = ({ userData, isOwnProfile, onSave }) => {
 					{isEditing ? (
 						<button
 							onClick={handleSave}
-							className='mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
+							className='mt-2 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300'
 						>
 							Save Changes
 						</button>

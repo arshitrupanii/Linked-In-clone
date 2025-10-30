@@ -7,7 +7,7 @@ import AboutSection from "../components/AboutSection";
 import ExperienceSection from "../components/ExperienceSection";
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 const ProfilePage = () => {
 	const { username } = useParams();

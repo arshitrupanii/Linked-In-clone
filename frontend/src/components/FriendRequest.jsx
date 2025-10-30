@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 import { Link } from "react-router-dom";
 
 const FriendRequest = ({ request }) => {

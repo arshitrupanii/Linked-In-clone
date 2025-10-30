@@ -42,11 +42,11 @@ const Navbar = () => {
 					<div className='flex items-center gap-2 md:gap-6'>
 						{authuser ? (
 							<>
-								<Link to={"/"} className='text-neutral flex flex-col items-center'>
+								<Link to={"/"} className='text-neutral hover:text-gray-300 flex flex-col items-center'>
 									<Home size={20} />
 									<span className='text-xs hidden md:block'>Home</span>
 								</Link>
-								<Link to='/network' className='text-neutral flex flex-col items-center relative'>
+								<Link to='/network' className='text-neutral flex flex-col items-center relative hover:text-gray-300'>
 									<Users size={20} />
 									<span className='text-xs hidden md:block'>My Network</span>
 									{unreadConnectionRequestsCount > 0 && (
@@ -58,13 +58,13 @@ const Navbar = () => {
 										</span>
 									)}
 								</Link>
-								<Link to='/notifications' className='text-neutral flex flex-col items-center relative'>
+								<Link to='/notifications' className='text-neutral flex flex-col items-center relative hover:text-gray-300'>
 									<Bell size={20} />
 									<span className='text-xs hidden md:block'>Notifications</span>
 									{unreadNotificationCount > 0 && (
 										<span
 											className='absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
-										rounded-full size-3 md:size-4 flex items-center justify-center'
+										rounded-full size-3 md:size-4 flex items-center justify-center hover:text-gray-300'
 										>
 											{unreadConnectionRequestsCount}
 										</span>
@@ -72,13 +72,13 @@ const Navbar = () => {
 								</Link>
 								<Link
 									to={`/profile/${authuser.username}`}
-									className='text-neutral flex flex-col items-center'
+									className='text-neutral flex flex-col items-center hover:text-gray-300'
 								>
 									<User size={20} />
 									<span className='text-xs hidden md:block'>Me</span>
 								</Link>
 								<button
-									className='flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-800'
+									className='flex items-center space-x-1 text-sm text-white'
 									onClick={() => logout()}
 								>
 									<LogOut size={20} />

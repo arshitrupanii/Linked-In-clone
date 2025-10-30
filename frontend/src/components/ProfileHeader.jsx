@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { axiosInstance } from "../lib/axios";
-import { toast } from "react-hot-toast";
+import {toast} from "react-toastify";
 
 import { Camera, Clock, MapPin, UserCheck, UserPlus, X } from "lucide-react";
 
@@ -149,7 +149,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 	};
 
 	return (
-		<div className='bg-white shadow rounded-lg mb-6'>
+		<div className='bg-secondary shadow rounded-lg mb-6'>
 			<div
 				className='relative h-48 rounded-t-lg bg-cover bg-center'
 				style={{
@@ -198,7 +198,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 							type='text'
 							value={editedData.name ?? userData.name}
 							onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-							className='text-2xl font-bold mb-2 text-center w-full'
+							className='text-2xl bg-base-200 font-bold mb-2 rounded-xl text-center w-full'
 						/>
 					) : (
 						<h1 className='text-2xl font-bold mb-2'>{userData.name}</h1>
@@ -209,10 +209,10 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 							type='text'
 							value={editedData.headline ?? userData.headline}
 							onChange={(e) => setEditedData({ ...editedData, headline: e.target.value })}
-							className='text-gray-600 text-center w-full'
+							className='bg-base-200 rounded-xl text-center w-full'
 						/>
 					) : (
-						<p className='text-gray-600'>{userData.headline}</p>
+						<p className=''>{userData.headline}</p>
 					)}
 
 					<div className='flex justify-center items-center mt-2'>
@@ -223,10 +223,10 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 								value={editedData.Location ?? userData.Location}
 								onChange={(e) => setEditedData({ ...editedData, Location: e.target.value })}
 								placeholder="Enter Location"
-								className='text-gray-600 text-center'
+								className='bg-base-200 rounded-xl text-white text-center'
 							/>
 						) : (
-							<span className='text-gray-600'>{userData.Location}</span>
+							<span className=''>{userData.Location}</span>
 						)}
 					</div>
 				</div>

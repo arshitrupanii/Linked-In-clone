@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import { UserPlus } from "lucide-react";
 import FriendRequest from "../components/FriendRequest";
 import UserCard from "../components/UserCard";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 const NetworkPage = () => {
   const { data: user } = useQuery({ queryKey: ["authuser"] });
@@ -46,7 +46,7 @@ const NetworkPage = () => {
             </div>
           ) : (
             // if use have not connection then that shows
-            <div className="bg-white rounded-lg shadow p-6 text-center mb-6">
+            <div className="bg-base-100 rounded-lg shadow p-6 text-center mb-6">
               <UserPlus size={48} className="mx-auto text-gray-400 mb-4" />
               <h3 className="text-xl font-semibold mb-2">
                 No Connection Requests
@@ -54,9 +54,6 @@ const NetworkPage = () => {
               <p className="text-gray-600">
                 You don&apos;t have any pending connection requests at the
                 moment.
-              </p>
-              <p className="text-gray-600 mt-2">
-                Explore suggested connections below to expand your network!
               </p>
             </div>
           )}

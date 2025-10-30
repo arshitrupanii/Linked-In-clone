@@ -9,7 +9,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 		onSave({ about });
 	};
 	return (
-		<div className='bg-white shadow rounded-lg p-6 mb-6'>
+		<div className='bg-secondary shadow rounded-lg p-6 mb-6'>
 			<h2 className='text-xl font-semibold mb-4'>About</h2>
 			{isOwnProfile && (
 				<>
@@ -18,7 +18,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 							<textarea
 								value={about}
 								onChange={(e) => setAbout(e.target.value)}
-								className='w-full p-2 border rounded'
+								className='bg-secondary w-full p-2 border rounded'
 								rows='4'
 							/>
 							<button
