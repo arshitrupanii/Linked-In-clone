@@ -220,13 +220,13 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 						{isEditing ? (
 							<input
 								type='text'
-								value={editedData.location ?? userData.location}
-								onChange={(e) => setEditedData({ ...editedData, location: e.target.value })}
+								value={editedData.Location ?? userData.Location}
+								onChange={(e) => setEditedData({ ...editedData, Location: e.target.value })}
 								placeholder="Enter Location"
 								className='text-gray-600 text-center'
 							/>
 						) : (
-							<span className='text-gray-600'>{userData.location}</span>
+							<span className='text-gray-600'>{userData.Location}</span>
 						)}
 					</div>
 				</div>

@@ -16,6 +16,3 @@ router.get("/status/:userId", protectedRoute, getConnectionStatus)
 
 
 export default router
-
-// 68dccbb36c8e0ed27db24691 user1
-// 68dd0a213304e1ea0cefa377 admin1
