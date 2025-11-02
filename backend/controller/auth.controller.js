@@ -4,26 +4,26 @@ import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res) => {
     try {
-        const {name, username,email, password} = req.body;
+        const { name, username, email, password } = req.body;
 
-        if(!name || !username || !password || !email){
-            return res.status(400).json({msg: 'Please enter all fields'})
+        if (!name || !username || !password || !email) {
+            return res.status(400).json({ msg: 'Please enter all fields' })
         }
 
-        const existingusername = await User.findOne({username: username})
+        const existingusername = await User.findOne({ username: username })
 
-        if(existingusername){
-            return res.status(400).json({msg: 'Username already exists'})
+        if (existingusername) {
+            return res.status(400).json({ msg: 'Username already exists' })
         }
 
-        const existingEmail = await User.findOne({email: email})
+        const existingEmail = await User.findOne({ email: email })
 
-        if(existingEmail){
-            return res.status(400).json({msg: 'Email already exists'})
+        if (existingEmail) {
+            return res.status(400).json({ msg: 'Email already exists' })
         }
 
-        if(password.length < 8){
-            return res.status(400).json({msg: "password is smaller than 8 characters"})
+        if (password.length < 8) {
+            return res.status(400).json({ msg: "password is smaller than 8 characters" })
         }
 
         const salt = await bcrypt.genSalt(10)
@@ -39,65 +39,81 @@ export const signup = async (req, res) => {
         await user.save();
 
         // create token for user loggedin continuesly
-        const token = jwt.sign({userId : user._id }, process.env.JWT_TOKEN, {expiresIn: "3d"})
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_TOKEN, { expiresIn: "3d" })
         res.cookie("jwt_LinkedIn_token", token, {
             httpOnly: true,
-            maxAge : 3 * 24 * 60 * 60 * 1000, //3 days
-            sameSite: true,
+            maxAge: 3 * 24 * 60 * 60 * 1000, //3 days
             secure: process.env.NODE_ENV === "production",
         })
 
-        res.status(201).json({message : 'user is Created successfully'})
+        res.status(201).json({ message: 'user is Created successfully' })
 
     } catch (error) {
-        console.error("Error in authcontroller.js signup : "+ error.message);
+        console.error("Error in authcontroller.js signup : " + error.message);
         res.status(500).send("Error in Signup : " + error.message);
     }
 }
 
 export const login = async (req, res) => {
     try {
-        const {email, password} = req.body;
-        const existingEmail = await User.findOne({email: email})
+        const { email, password } = req.body;
+        const existingEmail = await User.findOne({ email: email })
 
-        if(!existingEmail){
-            return res.status(400).json({msg: 'Email not found'})
+        if (!existingEmail) {
+            return res.status(400).json({ msg: 'Email not found' })
         }
 
         const isMatch = await bcrypt.compare(password, existingEmail.password)
 
         if (!isMatch) {
-            return res.status(404).json({msg: 'Password mismatch or incorrect.'})
+            return res.status(404).json({ msg: 'Password mismatch or incorrect.' })
         }
 
-        const token = jwt.sign({userId : existingEmail._id }, process.env.JWT_TOKEN, {expiresIn: "3d"})
+        const token = jwt.sign({ userId: existingEmail._id }, process.env.JWT_TOKEN, { expiresIn: "3d" })
 
         await res.cookie("jwt_LinkedIn_token", token, {
             httpOnly: true,
-            maxAge : 3 * 24 * 60 * 60 * 1000, // 3 days
-            sameSite: true,
+            maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
             secure: process.env.NODE_ENV === "production",
         })
 
-        res.status(201).json({message : 'Login successfully..'})
+        res.status(201).json({ message: 'Login successfully..' })
 
 
     } catch (error) {
-        console.error("Error in authcontroller.js Login : "+error.message);
-        res.status(500).send("error in authcontroller.js Login : "+error.message);
+        console.error("Error in authcontroller.js Login : " + error.message);
+        res.status(500).send("error in authcontroller.js Login : " + error.message);
     }
 }
 
 export const logout = (req, res) => {
     res.clearCookie("jwt_LinkedIn_token");
-    res.status(200).json({message : 'user is Logout successfully..'})
+    res.status(200).json({ message: 'user is Logout successfully..' })
 }
 
 export const getCurrentuser = async (req, res) => {
     try {
-        res.json(req.user)
+        const token = req.cookies["jwt_LinkedIn_token"] || "";
+
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized - No Token Provided" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+        if (!decoded) {
+            return res.status(401).json({ message: "Unauthorized - Invalid Token" });
+        }
+
+        const user = await User.findById(decoded.userId).select("-password");
+
+        if (!user) {
+            return res.status(401).json({ message: "User not found!!" });
+        }
+
+        res.status(200).json(user);
+
     } catch (error) {
-        console.error("Error in authcontroller.js getUser : "+error.message);
-        res.status(500).send("error in authcontroller.js getUser : "+error.message);
+        console.error("Error in authcontroller.js getUser : " + error.message);
+        res.status(500).send("error in authcontroller.js getUser : " + error.message);
     }
 }

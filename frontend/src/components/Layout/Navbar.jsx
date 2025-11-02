@@ -4,101 +4,123 @@ import { Link } from "react-router-dom";
 import { Bell, Home, LogOut, User, Users } from "lucide-react";
 
 const Navbar = () => {
-	const { data: authuser } = useQuery({ queryKey: ["authuser"] });
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	const { data: notifications } = useQuery({
-		queryKey: ["notifications"],
-		queryFn: async () => axiosInstance.get("/notifications"),
-		enabled: !!authuser,
-	});
+  const { data: authuser } = useQuery({
+    queryKey: ["authuser"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/auth/me");
+      return res.data;
+    },
+  });
 
-	const { data: connectionRequests } = useQuery({
-		queryKey: ["connectionRequests"],
-		queryFn: async () => axiosInstance.get("/connections/requests"),
-		enabled: !!authuser,
-	});
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => axiosInstance.get("/notifications"),
+    enabled: !!authuser,
+  });
 
-	const { mutate: logout } = useMutation({
-		mutationFn: () => axiosInstance.post("/auth/logout"),
-		onSuccess: () => {
+  const { data: connectionRequests } = useQuery({
+    queryKey: ["connectionRequests"],
+    queryFn: async () => axiosInstance.get("/connections/requests"),
+    enabled: !!authuser,
+  });
+
+  const { mutate: logout } = useMutation({
+    mutationFn: () => axiosInstance.post("/auth/logout"),
+    onSuccess: () => {
       console.log("logged out");
-			queryClient.invalidateQueries({ queryKey: ["authuser"] });
-		},
-	});
+      queryClient.invalidateQueries({ queryKey: ["authuser"] });
+    },
+  });
 
-	const unreadNotificationCount = notifications?.data.filter((notif) => !notif.read).length;
-	const unreadConnectionRequestsCount = connectionRequests?.data?.length;
+  const unreadNotificationCount = notifications?.data.filter(
+    (notif) => !notif.read
+  ).length;
+  const unreadConnectionRequestsCount = connectionRequests?.data?.length;
 
-	return (
-		<nav className='bg-secondary shadow-md sticky top-0 z-10'>
-			<div className='max-w-7xl mx-auto px-4'>
-				<div className='flex justify-between items-center py-3'>
-					<div className='flex items-center space-x-4'>
-						<Link to='/'>
-							<img className='h-8 rounded' src='/small-logo.png' alt='LinkedIn' />
-						</Link>
-					</div>
-					<div className='flex items-center gap-2 md:gap-6'>
-						{authuser ? (
-							<>
-								<Link to={"/"} className='text-neutral hover:text-gray-300 flex flex-col items-center'>
-									<Home size={20} />
-									<span className='text-xs hidden md:block'>Home</span>
-								</Link>
-								<Link to='/network' className='text-neutral flex flex-col items-center relative hover:text-gray-300'>
-									<Users size={20} />
-									<span className='text-xs hidden md:block'>My Network</span>
-									{unreadConnectionRequestsCount > 0 && (
-										<span
-											className='absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
-										rounded-full size-3 md:size-4 flex items-center justify-center'
-										>
-											{unreadConnectionRequestsCount}
-										</span>
-									)}
-								</Link>
-								<Link to='/notifications' className='text-neutral flex flex-col items-center relative hover:text-gray-300'>
-									<Bell size={20} />
-									<span className='text-xs hidden md:block'>Notifications</span>
-									{unreadNotificationCount > 0 && (
-										<span
-											className='absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
-										rounded-full size-3 md:size-4 flex items-center justify-center hover:text-gray-300'
-										>
-											{unreadConnectionRequestsCount}
-										</span>
-									)}
-								</Link>
-								<Link
-									to={`/profile/${authuser.username}`}
-									className='text-neutral flex flex-col items-center hover:text-gray-300'
-								>
-									<User size={20} />
-									<span className='text-xs hidden md:block'>Me</span>
-								</Link>
-								<button
-									className='flex items-center space-x-1 text-sm text-white'
-									onClick={() => logout()}
-								>
-									<LogOut size={20} />
-									<span className='hidden md:inline'>Logout</span>
-								</button>
-							</>
-						) : (
-							<>
-								<Link to='/login' className='btn btn-ghost'>
-									Sign In
-								</Link>
-								<Link to='/signup' className='btn btn-primary'>
-									Join now
-								</Link>
-							</>
-						)}
-					</div>
-				</div>
-			</div>
-		</nav>
-	);
+  return (
+    <nav className="bg-secondary shadow-md sticky top-0 z-10">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center py-3">
+          <div className="flex items-center space-x-4">
+            <Link to="/">
+              <img
+                className="h-8 rounded"
+                src="/small-logo.png"
+                alt="LinkedIn"
+              />
+            </Link>
+          </div>
+          <div className="flex items-center gap-2 md:gap-6">
+            {authuser ? (
+              <>
+                <Link
+                  to={"/"}
+                  className="text-neutral hover:text-gray-300 flex flex-col items-center"
+                >
+                  <Home size={20} />
+                  <span className="text-xs hidden md:block">Home</span>
+                </Link>
+                <Link
+                  to="/network"
+                  className="text-neutral flex flex-col items-center relative hover:text-gray-300"
+                >
+                  <Users size={20} />
+                  <span className="text-xs hidden md:block">My Network</span>
+                  {unreadConnectionRequestsCount > 0 && (
+                    <span
+                      className="absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
+										rounded-full size-3 md:size-4 flex items-center justify-center"
+                    >
+                      {unreadConnectionRequestsCount}
+                    </span>
+                  )}
+                </Link>
+                <Link
+                  to="/notifications"
+                  className="text-neutral flex flex-col items-center relative hover:text-gray-300"
+                >
+                  <Bell size={20} />
+                  <span className="text-xs hidden md:block">Notifications</span>
+                  {unreadNotificationCount > 0 && (
+                    <span
+                      className="absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
+										rounded-full size-3 md:size-4 flex items-center justify-center hover:text-gray-300"
+                    >
+                      {unreadConnectionRequestsCount}
+                    </span>
+                  )}
+                </Link>
+                <Link
+                  to={`/profile/${authuser.username}`}
+                  className="text-neutral flex flex-col items-center hover:text-gray-300"
+                >
+                  <User size={20} />
+                  <span className="text-xs hidden md:block">Me</span>
+                </Link>
+                <button
+                  className="flex items-center space-x-1 text-sm text-white"
+                  onClick={() => logout()}
+                >
+                  <LogOut size={20} />
+                  <span className="hidden md:inline">Logout</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn btn-ghost">
+                  Sign In
+                </Link>
+                <Link to="/signup" className="btn btn-primary">
+                  Join now
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 };
 export default Navbar;

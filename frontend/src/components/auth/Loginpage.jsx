@@ -18,6 +18,7 @@ const Loginpage = () => {
     mutationFn: async (userdata) => axiosInstance.post("/auth/login", userdata),
     onSuccess: (data) => {
       toast.success(data?.data?.message);
+      console.log(data)
       queryClient.invalidateQueries({ queryKey: ["authuser"] });
     },
     onError: (error) => {
@@ -25,8 +26,7 @@ const Loginpage = () => {
     },
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
 
     if (email.trim() === "" || password.trim() === "") {
       toast.error("Please fill the form");

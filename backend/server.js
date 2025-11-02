@@ -26,7 +26,6 @@ app.use(cookieParser());
 
 
 // all api is tested 
-// notifications and connections last 2 api
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/posts", postRoutes)
